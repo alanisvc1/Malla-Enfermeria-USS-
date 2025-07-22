@@ -3,190 +3,167 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Malla Curricular - Enfermería</title>
-  <link rel="stylesheet" href="styles.css" />
+  <title>Malla Curricular de Enfermería</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <h1>Malla Curricular de Enfermería</h1>
   <div id="semesters-container"></div>
+
   <script>
-    const courses = {
-      "1. Primer Semestre": [
-        { id: "biocel", name: "Biología celular", unlocks: ["fisiologia", "histo", "bioquim", "micro"] },
-        { id: "anato", name: "Anatomía humana", unlocks: ["fisiologia"] },
-        { id: "quimica", name: "Química general y orgánica", unlocks: ["bioquim"] },
-        { id: "bases", name: "Bases conceptuales de la gestión del cuidado", unlocks: ["auxilios", "socio", "educacion"] },
-        { id: "psico", name: "Psicología del desarrollo y aprendizaje", unlocks: ["ciclo"] },
-      ],
-      "2. Segundo Semestre": [
-        { id: "aprendizaje", name: "Estrategias para el aprendizaje" },
-        { id: "fisiologia", name: "Fisiología humana", requires: ["biocel", "anato"], unlocks: ["farma1", "farma2", "fisio", "ciclo"] },
-        { id: "histo", name: "Histoembriología", requires: ["biocel"] },
-        { id: "bioquim", name: "Bioquímica general", requires: ["quimica"] },
-        { id: "auxilios", name: "Primeros auxilios", requires: ["bases"] },
-        { id: "socio", name: "Socioantropología en la Salud", requires: ["bases"] },
-        { id: "form1", name: "Formación integral I" }
-      ],
-      "3. Tercer Semestre": [
-        { id: "micro", name: "Microbiología general", requires: ["biocel"] },
-        { id: "farma1", name: "Farmacología general", requires: ["fisiologia", "histo", "bioquim"] },
-        { id: "farma2", name: "Farmacología aplicada", requires: ["fisiologia", "histo", "bioquim"] },
-        { id: "fisio", name: "Fisiopatología", requires: ["fisiologia", "histo", "bioquim"] },
-        { id: "ciclo", name: "Enfermería en el ciclo vital", requires: ["psico", "fisiologia", "histo", "bioquim", "auxilios"] },
-        { id: "educacion", name: "Educación en salud", requires: ["bases"] },
-        { id: "antro", name: "Antropología" },
-        { id: "form2", name: "Formación integral II", requires: ["form1"] },
-      ],
-      "4. Cuarto Semestre": [
-        { id: "comunitaria1", name: "Enfermería en Salud Comunitaria I", requires: ["ciclo", "educacion"] },
-        { id: "metodos", name: "Metodologías de enseñanza y aprendizaje en salud", requires: ["micro", "farma1", "farma2", "fisio", "ciclo", "educacion"] },
-        { id: "gcpersona", name: "Gestión del cuidado en la persona", requires: ["micro", "farma1", "farma2", "fisio", "ciclo"] },
-        { id: "comunicacion", name: "Comunicación e interacción humana" },
-        { id: "epidemio", name: "Epidemiología" },
-        { id: "etica", name: "Ética", requires: ["antro"] },
-        { id: "form3", name: "Formación integral III", requires: ["form2"] },
-      ],
-      "5. Quinto Semestre": [
-        { id: "electivo", name: "Electivo de formación integral", requires: ["etica"] },
-        { id: "gcadulto", name: "Gestión del cuidado en el adulto", requires: ["comunitaria1", "metodos", "gcpersona", "comunicacion"] },
-        { id: "saludmental", name: "Enfermería en Salud Mental", requires: ["comunitaria1", "metodos", "gcpersona", "comunicacion"] },
-        { id: "admin", name: "Administración en enfermería" },
-        { id: "form4", name: "Formación integral IV", requires: ["form3"] },
-      ],
-      "6. Sexto Semestre": [
-        { id: "gcamayor", name: "Gestión del cuidado en el Adulto Mayor", requires: ["gcadulto", "saludmental"] },
-        { id: "gcmujer", name: "Gestión del cuidado en la Mujer y en el Recién Nacido", requires: ["gcadulto", "saludmental"] },
-        { id: "saludmental2", name: "Enfermería en alteraciones de la salud mental", requires: ["gcadulto", "saludmental"] },
-        { id: "gesclinicos", name: "Gestión de enfermería en Servicios Clínicos", requires: ["admin"] },
-        { id: "estadistica", name: "Estadística", requires: ["epidemio"] },
-      ],
-      "7. Séptimo Semestre": [
-        { id: "electivoprof", name: "Electivo profesional" },
-        { id: "urgencia", name: "Enfermería de Urgencia", requires: ["gcamayor", "gcmujer", "saludmental2"] },
-        { id: "gcniño", name: "Gestión del cuidado en el Niño y la Niña", requires: ["gcamayor", "gcmujer", "saludmental2"] },
-        { id: "investigacion1", name: "Investigación", requires: ["estadistica"] },
-        { id: "eticaenf", name: "Ética en enfermería", requires: ["gcadulto"] },
-      ],
-      "8. Octavo Semestre": [
-        { id: "comunitaria2", name: "Enfermería en Salud Comunitaria II", requires: ["urgencia", "gcniño"] },
-        { id: "investigacion2", name: "Investigación II", requires: ["investigacion1"] },
-        { id: "gcurgencia", name: "Gestión del cuidado en los Servicios de Urgencia", requires: ["urgencia", "gcniño"] },
-        { id: "gcadolescente", name: "Gestión del cuidado en el adolescente", requires: ["gcniño"] },
-      ],
-      "9. Noveno Semestre": [
-        { id: "internadointra", name: "Internado intrahospitalario", requires: ["comunitaria2", "investigacion2", "gcurgencia", "gcadolescente", "form4"] },
-      ],
-      "10. Décimo Semestre": [
-        { id: "internadoextra", name: "Internado extrahospitalario", requires: ["comunitaria2", "investigacion2", "gcurgencia", "gcadolescente", "form4"] },
-      ]
-    };
+    const courses = [
+      // ⬇️ Aquí van todos los cursos organizados por semestre
+      {
+        semester: 1,
+        subjects: [
+          { name: "Biología celular (DBIO 1069)", id: "BIOCEL", prerequisites: [] },
+          { name: "Anatomía humana (DMOR 0003)", id: "ANAT", prerequisites: [] },
+          { name: "Química general y orgánica (DQUI 1035)", id: "QUIM", prerequisites: [] },
+          { name: "Bases conceptuales de la gestión del cuidado (ENFE A001)", id: "BASES", prerequisites: [] },
+          { name: "Psicología del desarrollo y aprendizaje (ENFE A0002)", id: "PSICO", prerequisites: [] },
+        ],
+      },
+      {
+        semester: 2,
+        subjects: [
+          { name: "Estrategias para el aprendizaje (ASIGESA01)", id: "ESTRA", prerequisites: [] },
+          { name: "Fisiología humana (DBIO 1075)", id: "FISIO", prerequisites: ["BIOCEL", "ANAT"] },
+          { name: "Histoembriología (DMOR 0012)", id: "HISTO", prerequisites: [] },
+          { name: "Bioquímica general (DBIO 1076)", id: "BIOQ", prerequisites: ["QUIM"] },
+          { name: "Primeros auxilios (ENFE B001)", id: "PRIMER", prerequisites: ["BASES"] },
+          { name: "Socioantropología en la Salud (ENFE B002)", id: "SOCIO", prerequisites: ["BASES"] },
+          { name: "Formación integral I", id: "FOR1", prerequisites: [] },
+        ],
+      },
+      {
+        semester: 3,
+        subjects: [
+          { name: "Microbiología general (DBIO 1072)", id: "MICRO", prerequisites: ["BIOCEL"] },
+          { name: "Farmacología general (DBIO 1044)", id: "FARMA1", prerequisites: ["FISIO", "HISTO", "BIOQ"] },
+          { name: "Farmacología aplicada (DBIO 1045)", id: "FARMA2", prerequisites: ["FISIO", "HISTO", "BIOQ"] },
+          { name: "Fisiopatología (ENFE C001)", id: "FISIOPATO", prerequisites: ["FISIO", "HISTO", "BIOQ"] },
+          { name: "Enfermería en el ciclo vital (ENFE C002)", id: "CICLO", prerequisites: ["PSICO", "FISIO", "HISTO", "BIOQ", "PRIMER"] },
+          { name: "Educación en salud (ENFE C003)", id: "EDUC", prerequisites: ["BASES"] },
+          { name: "Antropología (FILS 0001)", id: "ANTRO", prerequisites: [] },
+          { name: "Formación integral II", id: "FOR2", prerequisites: ["FOR1"] },
+        ],
+      },
+      {
+        semester: 4,
+        subjects: [
+          { name: "Enfermería en Salud Comunitaria I (ENFE D001)", id: "COM1", prerequisites: ["CICLO", "EDUC"] },
+          { name: "Metodologías de enseñanza y aprendizaje (ENFE D002)", id: "METODO", prerequisites: ["MICRO", "FARMA1", "FARMA2", "FISIOPATO", "CICLO", "EDUC"] },
+          { name: "Gestión del cuidado en la persona (ENFE D003)", id: "GESTPERS", prerequisites: ["MICRO", "FARMA1", "FARMA2", "FISIOPATO", "CICLO"] },
+          { name: "Comunicación e interacción humana (ENFE D004)", id: "COMUNIC", prerequisites: [] },
+          { name: "Epidemiología (ENFE 0014)", id: "EPIDEMIO", prerequisites: [] },
+          { name: "Ética (FILS 0002)", id: "ETICA", prerequisites: ["ANTRO"] },
+          { name: "Formación integral III", id: "FOR3", prerequisites: ["FOR2"] },
+        ],
+      },
+      {
+        semester: 5,
+        subjects: [
+          { name: "Electivo de formación integral", id: "ELECFOR", prerequisites: ["ETICA"] },
+          { name: "Gestión del cuidado en el adulto (ENFE E001)", id: "ADULTO", prerequisites: ["COM1", "METODO", "GESTPERS", "COMUNIC"] },
+          { name: "Enfermería en Salud Mental (ENFE E002)", id: "SALUDMENT", prerequisites: ["COM1", "METODO", "GESTPERS", "COMUNIC"] },
+          { name: "Administración en enfermería (ENFE E003)", id: "ADMIN", prerequisites: [] },
+          { name: "Formación integral IV", id: "FOR4", prerequisites: ["FOR3"] },
+        ],
+      },
+      {
+        semester: 6,
+        subjects: [
+          { name: "Gestión del cuidado en el Adulto Mayor (ENFE F001)", id: "MAYOR", prerequisites: ["ADULTO", "SALUDMENT"] },
+          { name: "Gestión del cuidado en la Mujer y RN (ENFE F002)", id: "MUJER", prerequisites: ["ADULTO", "SALUDMENT"] },
+          { name: "Enfermería en alteraciones salud mental (ENFE F003)", id: "ALTERMENT", prerequisites: ["ADULTO", "SALUDMENT"] },
+          { name: "Gestión de enfermería en Servicios Clínicos (ENFE F004)", id: "SERVCLIN", prerequisites: ["ADMIN"] },
+          { name: "Estadística (DMAE E003)", id: "ESTAD", prerequisites: ["EPIDEMIO"] },
+        ],
+      },
+      {
+        semester: 7,
+        subjects: [
+          { name: "Electivo profesional", id: "ELECPRO", prerequisites: [] },
+          { name: "Enfermería de Urgencia (ENFE G001)", id: "URGENCIA", prerequisites: ["MAYOR", "MUJER", "ALTERMENT"] },
+          { name: "Gestión del cuidado en el Niño y Niña (ENFE G002)", id: "NINO", prerequisites: ["MAYOR", "MUJER", "ALTERMENT"] },
+          { name: "Investigación I (ENFE 0028)", id: "INV1", prerequisites: ["ESTAD"] },
+          { name: "Ética en enfermería (ENFE 0031)", id: "ETICAENF", prerequisites: ["ADULTO"] },
+        ],
+      },
+      {
+        semester: 8,
+        subjects: [
+          { name: "Enfermería en Salud Comunitaria II (ENFE H001)", id: "COM2", prerequisites: ["URGENCIA", "NINO"] },
+          { name: "Investigación II (ENFE 0033)", id: "INV2", prerequisites: ["INV1"] },
+          { name: "Gestión del cuidado en Urgencias (ENFE 0034)", id: "GESTURG", prerequisites: ["URGENCIA", "NINO"] },
+          { name: "Gestión del cuidado en el adolescente (ENFE 0035)", id: "ADOLE", prerequisites: ["NINO"] },
+        ],
+      },
+      {
+        semester: 9,
+        subjects: [
+          { name: "Internado intrahospitalario (ENFE I001)", id: "INTHOSP", prerequisites: ["COM2", "INV2", "GESTURG", "ADOLE", "FOR4"] },
+        ],
+      },
+      {
+        semester: 10,
+        subjects: [
+          { name: "Internado extrahospitalario (ENFE I002)", id: "INTEXT", prerequisites: ["COM2", "INV2", "GESTURG", "ADOLE", "FOR4"] },
+        ],
+      },
+    ];
 
-    const approved = JSON.parse(localStorage.getItem("approvedCourses") || "{}");
-
-    function createCourse(course) {
+    function createCourseElement(course) {
       const div = document.createElement("div");
-      div.className = "course";
-      div.id = course.id;
+      div.className = "course locked";
       div.textContent = course.name;
-
-      const isCompleted = approved[course.id];
-      const isLocked = course.requires && !course.requires.every(req => approved[req]);
-
-      if (isLocked && !isCompleted) div.classList.add("locked");
-      if (isCompleted) div.classList.add("completed");
+      div.dataset.id = course.id;
+      div.dataset.prerequisites = JSON.stringify(course.prerequisites);
 
       div.addEventListener("click", () => {
-        approved[course.id] = !approved[course.id];
-        localStorage.setItem("approvedCourses", JSON.stringify(approved));
-        renderAll();
+        if (div.classList.contains("locked")) return;
+        div.classList.toggle("completed");
+        updateUnlockedCourses();
       });
 
       return div;
     }
 
-    function renderAll() {
-      const container = document.getElementById("semesters-container");
-      container.innerHTML = "";
+    function updateUnlockedCourses() {
+      const completed = new Set(
+        Array.from(document.querySelectorAll(".course.completed")).map((el) => el.dataset.id)
+      );
 
-      for (const [semester, courseList] of Object.entries(courses)) {
-        const section = document.createElement("div");
-        section.className = "semester";
-
-        const title = document.createElement("h2");
-        title.textContent = semester;
-
-        const grid = document.createElement("div");
-        grid.className = "course-grid";
-
-        for (const course of courseList) {
-          const card = createCourse(course);
-          grid.appendChild(card);
+      document.querySelectorAll(".course").forEach((el) => {
+        const prereqs = JSON.parse(el.dataset.prerequisites);
+        const unlocked = prereqs.every((p) => completed.has(p));
+        if (!el.classList.contains("completed")) {
+          el.classList.toggle("locked", !unlocked);
         }
-
-        section.appendChild(title);
-        section.appendChild(grid);
-        container.appendChild(section);
-      }
+      });
     }
 
-    renderAll();
+    function renderSemesters() {
+      const container = document.getElementById("semesters-container");
+      courses.forEach((semester) => {
+        const semDiv = document.createElement("div");
+        semDiv.className = "semester";
+        const title = document.createElement("h2");
+        title.textContent = `Semestre ${semester.semester}`;
+        semDiv.appendChild(title);
+
+        semester.subjects.forEach((subject) => {
+          const courseEl = createCourseElement(subject);
+          semDiv.appendChild(courseEl);
+        });
+
+        container.appendChild(semDiv);
+      });
+
+      updateUnlockedCourses();
+    }
+
+    renderSemesters();
   </script>
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #fdf6ef;
-      margin: 0;
-      padding: 20px;
-      color: #1f3a56;
-    }
-
-    h1 {
-      text-align: center;
-      margin-bottom: 40px;
-      color: #0e2f44;
-    }
-
-    .semester {
-      margin-bottom: 40px;
-      padding: 20px;
-      background-color: #e6f0f3;
-      border-radius: 16px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.05);
-    }
-
-    .semester h2 {
-      color: #14575c;
-      margin-bottom: 10px;
-    }
-
-    .course-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-
-    .course {
-      flex: 1 1 180px;
-      padding: 15px;
-      border-radius: 12px;
-      background-color: #ffffff;
-      border: 2px solid #ccc;
-      cursor: pointer;
-      transition: background-color 0.3s, border-color 0.3s;
-      user-select: none;
-    }
-
-    .course.locked {
-      opacity: 0.5;
-      pointer-events: none;
-      background-color: #eeeeee;
-    }
-
-    .course.completed {
-      background-color: #a8dadc;
-      border-color: #457b9d;
-      color: #1d3557;
-    }
-  </style>
 </body>
 </html>
